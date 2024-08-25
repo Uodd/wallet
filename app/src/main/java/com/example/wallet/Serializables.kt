@@ -3,7 +3,7 @@ package com.example.wallet
 import kotlinx.serialization.Serializable
 import org.w3c.dom.Text
 import javax.net.ssl.SSLEngineResult.Status
-
+//SERIALIZATION NOT CURRENTLY USED, BUT COULD BE USEFUL LATER TO SHARE DATA
 @Serializable
 data class UserData(val id:Int=-1,val firstName:String,val lastName:String,val saldo:Float=0.toFloat(), val time:String)
 
