@@ -10,9 +10,10 @@ import androidx.activity.enableEdgeToEdge
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //this.deleteDatabase("ActivityData.db") //Debugging databases... deletes db file
         enableEdgeToEdge()
         setContent {
-            WalletApp()
+            WalletApp(this)
         }
     }
 }
