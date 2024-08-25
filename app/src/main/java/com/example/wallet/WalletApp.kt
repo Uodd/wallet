@@ -13,6 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.wallet.db.ActivityDb
+import com.example.wallet.db.CardsDb
 import com.example.wallet.db.UsersDb
 import com.example.wallet.ui.theme.WalletTheme
 
@@ -40,7 +41,14 @@ fun WalletApp(context: Context){
                 composable(route = "home/{userId}",
                     arguments = listOf(navArgument("userId"){type= NavType.StringType}))
                 {backStackEntry->
-                    MainScreen(gotoLogin = { navController.navigate("login")},backStackEntry.arguments?.getString("userId"),context)
+                    backStackEntry.arguments!!.getString("userId")?.let {
+                        MainScreen(gotoLogin = { navController.navigate("login")},
+                            it,
+                            usersDb,
+                            activityDb,
+                            CardsDb(context)
+                        )
+                    }
                 }
                 composable(route = "login") {
                     LogInScreen(
