@@ -10,8 +10,8 @@ import androidx.fragment.app.FragmentActivity
 class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       //this.deleteDatabase("ActivityData.db") //Debugging databases... deletes db file
-       //this.deleteDatabase("UsersData.db")
+        //this.deleteDatabase("ActivityData.db") //Debugging databases... deletes db file
+        //this.deleteDatabase("UsersData.db")
         //this.deleteDatabase("creditCards.db")
         enableEdgeToEdge()
         setContent {
