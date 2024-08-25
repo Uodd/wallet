@@ -1,5 +1,6 @@
 package com.example.wallet
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -84,13 +85,21 @@ fun LoginCard(gotoMain: (String)-> Unit,
               gotoLogin: ()->Unit,
               usersDb: UsersDb
 ){
-    Column {
+    Card(modifier = Modifier
+        .fillMaxSize()
+        .padding(60.dp),
+    ) {
+        for(user in usersDb.getUsers()){
+            Log.v("INFOOOOO",user.firstName)
+        Button(onClick = {gotoMain(user.id.toString())}) {
+                Text(text = "${user.lastName}, ${user.firstName}")
+            }
+        }
         //Close
-        Button(onClick =gotoLogin) {
+        Button(onClick =gotoLogin, modifier = Modifier.padding(20.dp)) {
             Text(text = CLOSE_CARD_TXT)
         }
     }
-    Text("COMPLETAR")
 }
 
 const val FNAME_TEXT = "First Name"
@@ -136,7 +145,7 @@ fun CreateUserCard(gotoMain: (String)-> Unit,
             OutlinedButton(
                 modifier = Modifier.padding(top = 30.dp),
                 onClick = {
-                    var userId: Long?
+                    val userId: Long?
                     //Saves UserData TODO Ask for input if needed! Add another characters checks
                     if (firstname!="" && lastname!="") {
                         userId = usersDb.save(
@@ -146,6 +155,7 @@ fun CreateUserCard(gotoMain: (String)-> Unit,
                                 time = getTimeString()
                             )
                         )
+                        Log.v("INFO","USERID AT LOGIN $userId")
                         if(userId!=null){gotoMain(userId.toString())}
                         else{gotoLogin()}
 
