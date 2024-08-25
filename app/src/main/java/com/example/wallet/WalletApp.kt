@@ -29,10 +29,13 @@ fun WalletApp(context: Context){
         val activityDb = ActivityDb(context)
         val usersDb = UsersDb(context)
         val lastActivity= activityDb.getLast()
-        if(lastActivity != null){ //TODO: add time check
-            entryPoint = "home/{lastActivity}"
-        }
 
+        if(lastActivity != null && lastActivity.status>0){ //TODO: add time check
+            Log.v("INFO","User is already logged")
+            Log.v("INFO","AT WALLET USERID ${lastActivity.userid}")
+            //entryPoint = "home/${lastActivity.userid}" //TODO FIX THIS, IT IS NOT WORKINg
+            Log.v("Entry point",entryPoint)
+        }
         Scaffold(
             modifier = Modifier
                 .fillMaxSize(),
