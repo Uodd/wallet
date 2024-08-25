@@ -68,7 +68,7 @@ class CardsDb(context: Context){
             put(CreditCards.COLUMN_USERID,card.userid)
             put(CreditCards.COLUMN_BRAND,card.brand)
         }
-        val rowID= dbw?.insert(Users.TABLE_NAME,null,values)
+        val rowID= dbw?.insert(CreditCards.TABLE_NAME,null,values)
         dbw.close()
         return rowID
     }
@@ -76,11 +76,11 @@ class CardsDb(context: Context){
         val dbr= db.readableDatabase
         val cards= mutableListOf<CardData>()
         try{
-            val selection =  "${CreditCards.COLUMN_USERID}=?"
+            val selection =  "${CreditCards.COLUMN_USERID} = ? "
             val selectionArgs= arrayOf(userID.toString())
 
             val cursor =dbr.query(
-                Users.TABLE_NAME,
+                CreditCards.TABLE_NAME,
                 null,
                 selection,
                 selectionArgs,

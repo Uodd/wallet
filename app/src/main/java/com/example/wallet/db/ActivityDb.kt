@@ -56,6 +56,7 @@ class ActivityDb(context: Context){
         }
         val rowID= dbw?.insert(Activities.TABLE_NAME,null,values)
         dbw.close()
+        Log.v("INFO","Saved ${activity}")
     }
     //SELECT * FROM table ORDER BY column DESC LIMIT 1;
     //TODO a little order wouldn't hurt
@@ -94,6 +95,7 @@ class ActivityDb(context: Context){
             return null
         }
         dbr.close()
+        Log.v("INFO","GET ${activity.toString()}")
         return activity
     }
 

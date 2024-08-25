@@ -65,15 +65,18 @@ class UsersDb(context: Context){
         }
         val rowID= dbw?.insert(Users.TABLE_NAME,null,values)
         dbw.close()
+        Log.v("INFO","Saved $user")
         return rowID
     }
 
-    fun getUsers(id:Int?=null):MutableList<UserData>{
+    fun getUsers(ID:Int?=null):MutableList<UserData>{
         val dbr= db.readableDatabase
+        val TAG="GET USERS"
+        Log.v(TAG,"0")
         val users= mutableListOf<UserData>()
         try{
-            val selection = if (id==null) null else "${BaseColumns._ID}=?"
-            val selectionArgs= arrayOf(id.toString())
+            val selection = if (ID==null) null else "${BaseColumns._ID} = ? "
+            val selectionArgs= if (ID==null) null else arrayOf(ID.toString())
 
             val cursor =dbr.query(
                 Users.TABLE_NAME,
@@ -87,23 +90,29 @@ class UsersDb(context: Context){
             try{
                 with(cursor){
                     while(moveToNext()){
-                        val id = getInt(getColumnIndexOrThrow(BaseColumns._ID))
+                        val ide = getInt(getColumnIndexOrThrow(BaseColumns._ID))
                         val firstname = getString(getColumnIndexOrThrow(Users.COLUMN_FIRST_NAME))
                         val lastname = getString(getColumnIndexOrThrow(Users.COLUMN_LAST_NAME))
                         val time = getString(getColumnIndexOrThrow(Users.COLUMN_TIME))
                         val saldo = getFloat(getColumnIndexOrThrow(Users.COLUMN_SALDO))
 
-                        users.add(UserData(id,firstname,lastname,saldo,time))
+                        users.add(UserData(ide,firstname,lastname,saldo,time))
+                        Log.v("AAAA",UserData(ide,firstname,lastname,saldo,time).toString())
                     }
                 }
+                cursor.close()
+
             }catch (e:IllegalArgumentException){
                 Log.v("EXCEPTION",e.toString())
+                cursor.close()
                 dbr.close()
             }
+            cursor.close()
         }catch (e: CursorIndexOutOfBoundsException){
             Log.v("EXCEPTION",e.toString())
             dbr.close()
         }
+        Log.v("INFO","Get $users")
         return users
     }
 }
