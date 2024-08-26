@@ -26,14 +26,14 @@ import com.example.wallet.db.UsersDb
 
 const val LOG_IN_TXT = "Login as "
 const val CREATE_TXT = "Create Account"
-const val CLOSE_CARD_TXT= "Close"
+const val CLOSE_CARD_TXT = "Close"
 
 @Composable
 fun LogInScreen(
-    gotoMain: (String)-> Unit,
-    gotoLogin: ()->Unit,
+    gotoMain: (String) -> Unit,
+    gotoLogin: () -> Unit,
     usersDb: UsersDb
-){
+) {
     var status by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
@@ -43,23 +43,25 @@ fun LogInScreen(
         verticalArrangement = Arrangement.Center
 
     ) {
-        when(status){
+        when (status) {
             "create" -> {
-                CreateUserCard(gotoMain,gotoLogin,usersDb)
+                CreateUserCard(gotoMain, gotoLogin, usersDb)
             }
+
             "login" -> {
-                LoginCard(gotoMain,gotoLogin,usersDb)
+                LoginCard(gotoMain, gotoLogin, usersDb)
             }
+
             else -> {
             }
         }
         OutlinedButton(
             modifier = Modifier.padding(top = 50.dp),
-            onClick =  {
-                status= "create"
+            onClick = {
+                status = "create"
             },
             //border = BorderStroke(1.dp, Color.LightGray),
-        ){
+        ) {
             Text(
                 text = CREATE_TXT
             )
@@ -68,35 +70,38 @@ fun LogInScreen(
         OutlinedButton(
             modifier = Modifier.padding(top = 30.dp),
             onClick = {
-                status="login"
+                status = "login"
             },
             //border = BorderStroke(1.dp, Color.LightGray),
             shape = RoundedCornerShape(4.dp),
         ) {
             Text(
-                text =LOG_IN_TXT,
+                text = LOG_IN_TXT,
                 style = MaterialTheme.typography.labelMedium
             )
         }
     }
 }
+
 @Composable
-fun LoginCard(gotoMain: (String)-> Unit,
-              gotoLogin: ()->Unit,
-              usersDb: UsersDb
-){
-    Card(modifier = Modifier
-        .fillMaxSize()
-        .padding(60.dp),
+fun LoginCard(
+    gotoMain: (String) -> Unit,
+    gotoLogin: () -> Unit,
+    usersDb: UsersDb
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(60.dp),
     ) {
-        for(user in usersDb.getUsers()){
-            Log.v("INFOOOOO",user.firstName)
-        Button(onClick = {gotoMain(user.id.toString())}) {
+        for (user in usersDb.getUsers()) {
+            Log.v("INFOOOOO", user.firstName)
+            Button(onClick = { gotoMain(user.id.toString()) }) {
                 Text(text = "${user.lastName}, ${user.firstName}")
             }
         }
         //Close
-        Button(onClick =gotoLogin, modifier = Modifier.padding(20.dp)) {
+        Button(onClick = gotoLogin, modifier = Modifier.padding(20.dp)) {
             Text(text = CLOSE_CARD_TXT)
         }
     }
@@ -108,46 +113,54 @@ const val SUBMIT_TEXT = "Submit"
 const val CREATE_TITLE_TEXT = "Create User"
 
 @Composable
-fun CreateUserCard(gotoMain: (String)-> Unit,
-                   gotoLogin: ()->Unit,
-                   usersDb: UsersDb
-){
-    var firstname by remember {mutableStateOf("")}
-    var lastname by remember { mutableStateOf("")}
+fun CreateUserCard(
+    gotoMain: (String) -> Unit,
+    gotoLogin: () -> Unit,
+    usersDb: UsersDb
+) {
+    var firstname by remember { mutableStateOf("") }
+    var lastname by remember { mutableStateOf("") }
     Card(
         modifier = Modifier
             .fillMaxSize()
             .padding(60.dp),
-        ){
+    ) {
         Column {
             //Close
-            Button(onClick =gotoLogin) {
+            Button(onClick = gotoLogin) {
                 Text(text = CLOSE_CARD_TXT)
             }
             //Title
-            Text(CREATE_TITLE_TEXT,
+            Text(
+                CREATE_TITLE_TEXT,
                 modifier = Modifier
-                    .padding(top=20.dp, bottom = 20.dp, start = 20.dp),
+                    .padding(top = 20.dp, bottom = 20.dp, start = 20.dp),
                 fontSize = 30.sp
             )
             //First Name
             OutlinedTextField(
                 value = firstname,
-                onValueChange ={firstname=it},
-                label = {Text(
-                FNAME_TEXT)} )
+                onValueChange = { firstname = it },
+                label = {
+                    Text(
+                        FNAME_TEXT
+                    )
+                })
             //Last Name
             OutlinedTextField(
                 value = lastname,
-                onValueChange ={lastname=it},
-                label = {Text(
-                    LNAME_TEXT)} )
+                onValueChange = { lastname = it },
+                label = {
+                    Text(
+                        LNAME_TEXT
+                    )
+                })
             OutlinedButton(
                 modifier = Modifier.padding(top = 30.dp),
                 onClick = {
                     val userId: Long?
                     //Saves UserData TODO Ask for input if needed! Add another characters checks
-                    if (firstname!="" && lastname!="") {
+                    if (firstname != "" && lastname != "") {
                         userId = usersDb.save(
                             UserData(
                                 firstName = firstname,
@@ -155,15 +168,17 @@ fun CreateUserCard(gotoMain: (String)-> Unit,
                                 time = getTimeString()
                             )
                         )
-                        Log.v("INFO","USERID AT LOGIN $userId")
-                        if(userId!=null){gotoMain(userId.toString())}
-                        else{gotoLogin()}
-
+                        Log.v("INFO", "USERID AT LOGIN $userId")
+                        if (userId != null) {
+                            gotoMain(userId.toString())
+                        } else {
+                            gotoLogin()
+                        }
                     }
                 }
-            ){
+            ) {
                 Text(
-                    text =SUBMIT_TEXT,
+                    text = SUBMIT_TEXT,
                     style = MaterialTheme.typography.labelMedium
                 )
             }

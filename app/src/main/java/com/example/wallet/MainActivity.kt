@@ -21,7 +21,6 @@ class MainActivity : FragmentActivity() {
 }
 
 
-
 /*
 @Preview(showBackground = true)
 @Composable

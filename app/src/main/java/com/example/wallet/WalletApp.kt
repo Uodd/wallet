@@ -18,48 +18,54 @@ import com.example.wallet.db.UsersDb
 import com.example.wallet.ui.theme.WalletTheme
 
 @Composable
-fun WalletApp(context: Context){
+fun WalletApp(context: Context) {
     Log.v("INFO", "Starting WalletApp")
 
     val navController = rememberNavController()
 
     WalletTheme {
 
-        var entryPoint="login"
+        var entryPoint = "login"
         val activityDb = ActivityDb(context)
         val usersDb = UsersDb(context)
-        val lastActivity= activityDb.getLast()
+        val lastActivity = activityDb.getLast()
 
-        if(lastActivity != null && lastActivity.status>0){ //TODO: add time check
-            Log.v("INFO","User is already logged")
-            Log.v("INFO","AT WALLET USERID ${lastActivity.userid}")
+        if (lastActivity != null && lastActivity.status > 0) { //TODO: add time check
+            Log.v("INFO", "User is already logged")
+            Log.v("INFO", "AT WALLET USERID ${lastActivity.userid}")
             //entryPoint = "home/${lastActivity.userid}" //TODO FIX THIS, IT IS NOT WORKINg
-            Log.v("Entry point",entryPoint)
+            Log.v("Entry point", entryPoint)
         }
         Scaffold(
             modifier = Modifier
                 .fillMaxSize(),
         ) { innerPadding ->
-            NavHost(navController , startDestination = entryPoint, modifier = Modifier.padding(innerPadding)) {
+            NavHost(
+                navController,
+                startDestination = entryPoint,
+                modifier = Modifier.padding(innerPadding)
+            ) {
                 composable(route = "home/{userId}",
-                    arguments = listOf(navArgument("userId"){type= NavType.StringType}))
-                {backStackEntry->
+                    arguments = listOf(navArgument("userId") { type = NavType.StringType })
+                )
+                { backStackEntry ->
                     backStackEntry.arguments!!.getString("userId")?.let {
-                        MainScreen(gotoLogin = { navController.navigate("login")},
+                        MainScreen(
+                            gotoLogin = { navController.navigate("login") },
                             it,
                             usersDb,
                             activityDb,
-                            CardsDb(context)
+                            CardsDb(context),
+                            context
                         )
                     }
                 }
                 composable(route = "login") {
                     LogInScreen(
-                        gotoMain = {
-                        userId:String ->
-                        navController.navigate("home/$userId")
-                                   },
-                        gotoLogin = {navController.navigate("login")},
+                        gotoMain = { userId: String ->
+                            navController.navigate("home/$userId")
+                        },
+                        gotoLogin = { navController.navigate("login") },
                         usersDb = usersDb
                     )
                 }
