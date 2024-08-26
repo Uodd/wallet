@@ -56,7 +56,7 @@ fun MainScreen(
     }
 
 
-    fun encryptor(data: ByteArray) {//TODO rework idea to make reusable for other objects
+    fun encryptor(data: ByteArray) {
         toEncrypt.clear()
         Log.v("ENCRYPTOR", "$data")
         toEncrypt.add(data)
