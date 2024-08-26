@@ -134,7 +134,7 @@ fun Authenticated(
             status = 1,
             time = getTimeString()
         )
-    ) //SaveS connection activity TODO addDisconnection
+    ) //Saves connection activity 
 
     val cards = cardsDB.getCards(currentUser.id)
 
@@ -142,7 +142,7 @@ fun Authenticated(
     Column {
         Button(onClick = {
             gotoLogin()
-            activityDb.save(
+            activityDb.save( //Saves disconnection activity
                 ActivityData(
                     userid = currentUser.id,
                     status = 0,
